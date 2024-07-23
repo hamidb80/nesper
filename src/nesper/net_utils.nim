@@ -75,7 +75,7 @@ proc toIpAddress*(address: array[4, uint32]): IpAddress =
     for i in 0..3:
       result.address_v6[i] = uint8(address[i] shr (i*8))
 
-when defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_x):
+when defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_X):
   proc toIpAddress*(ip: ip4_addr_t): IpAddress =
     toIpAddress(ip.address)
 

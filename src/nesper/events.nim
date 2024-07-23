@@ -1,7 +1,7 @@
 import consts
 import general
 
-when defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_x):
+when defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_X):
     import esp/net/tcpip_adapter
     export tcpip_adapter
 else:

@@ -58,7 +58,7 @@ type
 
 type
   mdns_ip_addr_t* {.importc: "mdns_ip_addr_t", header: hdr, bycopy.} = object
-    when defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_x):
+    when defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_X):
       `addr`* {.importc: "addr".}: ip_addr_t ## !< IP address
     else:
       `addr`* {.importc: "addr".}: esp_ip_addr_t ## !< IP address
@@ -78,7 +78,7 @@ type
 type
   mdns_result_t* {.importc: "mdns_result_t", header: hdr, bycopy.} = object
     next* {.importc: "next".}: ptr mdns_result_t ## !< next result, or NULL for the last result in the list
-    when defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_x):
+    when defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_X):
         tcpip_if* {.importc: "tcpip_if".}: tcpip_adapter_if_t ## !< interface on which the result came (AP/STA/ETH)
     else:
         tcpip_if* {.importc: "tcpip_if".}: mdns_if_t ## !< interface on which the result came (AP/STA/ETH)
