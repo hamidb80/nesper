@@ -89,7 +89,7 @@ proc parseNimbleArgs(): NimbleArgs =
     esp32_template  = flags.getOrDefault("--esp32-template", "networking")
     app_template  = flags.getOrDefault("--app-template", "http_server")
 
-    esp_idf_flag = "ESP_IDF_$1" % [flags.getOrDefault("--esp-idf-version", "V4.0")]
+    esp_idf_flag = "ESP_IDF_$1" % [flags.getOrDefault("--esp-idf-version", "V4.0").replace(".", "_").toUpper()]
     esp_idf_version = "ESP_IDF_$1" % [esp_idf_flag]
 
     esp_idf_major =
