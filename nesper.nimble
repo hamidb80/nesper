@@ -20,9 +20,16 @@ requires "bytesequtils"
 # Tasks
 import os, strutils
 
+let NFLAGS="--verbosity:0 -d:ESP_IDF_VERSION=" &
+              getEnv("ESP_IDF_VERSION", "4.4") &
+              " --cincludes:" & (getCurrentDir() / "tests" / "c_headers" / "mock")
+
 proc header(msg: string) =
   echo "\n\n", msg, "\n"
-proc testExec(cmd: string) =
+
+proc testExec(extras, file: string, flags=NFLAGS) =
+  let cmd = "nim c $1 $2 $3" % [flags, extras, file]
+  echo("Testing: " & $file)
   echo "running: ", cmd
   exec(cmd)
 
@@ -31,8 +38,7 @@ proc general_tests() =
   header "=== Regular Tests ==="
   for dtest in listFiles("tests/"):
     if dtest.splitFile()[1].startsWith("t") and dtest.endsWith(".nim"):
-      echo("Testing: " & $dtest)
-      testExec "nim c --verbosity:0 --compileOnly:on --cincludes:c_headers/mock/ --os:freertos $1" % [dtest]
+      testExec("--compileOnly:on --os:freertos", dtest)
 
 proc driver_tests() =
   # Driver tests
@@ -40,23 +46,21 @@ proc driver_tests() =
   for dtest in listFiles("tests/driver/"):
     if dtest.splitFile()[1].startsWith("t") and dtest.endsWith(".nim"):
       echo("\nTesting: " & $dtest)
-      testExec "nim c --verbosity:0 --compileOnly:on --cincludes:c_headers/mock/ --os:freertos $1" % [dtest]
+      testExec("--compileOnly:on --os:freertos", dtest)
 
 proc storage_tests() =
   # Storage tests
   header "=== Storage Tests ==="
   for dtest in listFiles("tests/storage/"):
     if dtest.splitFile()[1].startsWith("t") and dtest.endsWith(".nim"):
-      echo("\nTesting: " & $dtest)
-      testExec "nim c --verbosity:0 --compileOnly:on --cincludes:c_headers/mock/ --os:freertos $1" % [dtest]
+      testExec("--compileOnly:on --os:freertos", dtest)
 
 proc exec_tests() =
   # Exec tests
   header "=== Exec Tests ==="
   for dtest in listFiles("tests/exec_tests/"):
     if dtest.splitFile()[1].startsWith("t") and dtest.endsWith(".nim"):
-      echo("\nTesting: " & $dtest)
-      testExec "nim c --verbosity:0 -r --cincludes:$2/tests/c_headers/mock/ $1" % [dtest, getCurrentDir()]
+      testExec(" -r ", dtest)
 
 task test, "Runs the test suite":
   general_tests()

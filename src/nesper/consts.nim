@@ -8,9 +8,12 @@ type
 
 import strutils
 const
-  ESP_IDF_VERSION* {.strdefine.} = "4.4"
+  ESP_IDF_VERSION* {.strdefine.} = "0.0"
   ESP_IDF_MAJOR* {.intdefine.} = ESP_IDF_VERSION.split(".")[0].parseInt()
   ESP_IDF_MINOR* {.intdefine.} = ESP_IDF_VERSION.split(".")[1].parseInt()
+
+static:
+  doAssert ESP_IDF_VERSION != "0.0", "Must set esp-idf version using `-d:ESP_IDF_VERSION=4.4`"
 
 
 ##  Definitions for error constants.
