@@ -20,6 +20,7 @@ import os, strutils
 
 proc general_tests() =
   # Regular tests
+  echo "=== Regular Tests ==="
   for dtest in listFiles("tests/"):
     if dtest.startsWith("t") and dtest.endsWith(".nim"):
       echo("Testing: " & $dtest)
@@ -27,18 +28,21 @@ proc general_tests() =
 
 proc driver_tests() =
   # Driver tests
+  echo "=== Driver Tests ==="
   for dtest in listFiles("tests/driver/"):
     if dtest.startsWith("t") and dtest.endsWith(".nim"):
       exec "nim c --compileOnly:on --cincludes:c_headers/mock/ --os:freertos $1" % [dtest]
 
 proc storage_tests() =
-  # Driver tests
+  # Storage tests
+  echo "=== Storage Tests ==="
   for dtest in listFiles("tests/storage/"):
     if dtest.startsWith("t") and dtest.endsWith(".nim"):
       exec "nim c --compileOnly:on --cincludes:c_headers/mock/ --os:freertos $1" % [dtest]
 
 proc exec_tests() =
   # Exec tests
+  echo "=== Exec Tests ==="
   for dtest in listFiles("tests/exec_tests/"):
     if dtest.startsWith("t") and dtest.endsWith(".nim"):
       exec "nim c -r --cincludes:$2/tests/c_headers/mock/ $1" % [dtest, getCurrentDir()]
