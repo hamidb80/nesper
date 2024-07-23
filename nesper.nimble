@@ -18,34 +18,40 @@ requires "stew >= 0.1.0"
 # Tasks
 import os, strutils
 
+proc header(msg: string) =
+  echo "\n\n", msg, "\n"
+proc testExec(cmd: string) =
+  echo "running: ", cmd
+  exec(cmd)
+
 proc general_tests() =
   # Regular tests
-  echo "=== Regular Tests ==="
+  header "=== Regular Tests ==="
   for dtest in listFiles("tests/"):
     if dtest.startsWith("t") and dtest.endsWith(".nim"):
       echo("Testing: " & $dtest)
-      exec "nim c --compileOnly:on --cincludes:c_headers/mock/ --os:freertos $1" % [dtest]
+      testExec "nim c --compileOnly:on --cincludes:c_headers/mock/ --os:freertos $1" % [dtest]
 
 proc driver_tests() =
   # Driver tests
-  echo "=== Driver Tests ==="
+  header "=== Driver Tests ==="
   for dtest in listFiles("tests/driver/"):
     if dtest.startsWith("t") and dtest.endsWith(".nim"):
-      exec "nim c --compileOnly:on --cincludes:c_headers/mock/ --os:freertos $1" % [dtest]
+      testExec "nim c --compileOnly:on --cincludes:c_headers/mock/ --os:freertos $1" % [dtest]
 
 proc storage_tests() =
   # Storage tests
-  echo "=== Storage Tests ==="
+  header "=== Storage Tests ==="
   for dtest in listFiles("tests/storage/"):
     if dtest.startsWith("t") and dtest.endsWith(".nim"):
-      exec "nim c --compileOnly:on --cincludes:c_headers/mock/ --os:freertos $1" % [dtest]
+      testExec "nim c --compileOnly:on --cincludes:c_headers/mock/ --os:freertos $1" % [dtest]
 
 proc exec_tests() =
   # Exec tests
-  echo "=== Exec Tests ==="
+  header "=== Exec Tests ==="
   for dtest in listFiles("tests/exec_tests/"):
     if dtest.startsWith("t") and dtest.endsWith(".nim"):
-      exec "nim c -r --cincludes:$2/tests/c_headers/mock/ $1" % [dtest, getCurrentDir()]
+      testExec "nim c -r --cincludes:$2/tests/c_headers/mock/ $1" % [dtest, getCurrentDir()]
 
 task test, "Runs the test suite":
   general_tests()
