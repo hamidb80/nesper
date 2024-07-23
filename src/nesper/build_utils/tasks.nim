@@ -87,7 +87,13 @@ proc parseNimbleArgs(): NimbleArgs =
     flags = idf_args.filterIt(it.contains(":")).mapIt(it.split(":")).mapIt( (it[0], it[1])).toTable()
     esp32_template  = flags.getOrDefault("--esp32-template", "networking")
     app_template  = flags.getOrDefault("--app-template", "http_server")
-    esp_idf_ver  = flags.getOrDefault("--esp-idf-version", "V4.0").replace(".", "_").toUpper()
+
+    esp_idf_ver = flags.getOrDefault("--esp-idf-version", "V4.0")
+
+    esp_idf_version =
+      if esp_idf_ver.startsWith("4."): "ESP_IDF_V4_X"
+      elif esp_idf_ver.startsWith("5."): "ESP_IDF_V5_X"
+      else: "ESP_IDF_V4_X"
 
   # echo "APP_TEMPLATE ANY: ", idf_args.any(x => x.startsWith("--app-template"))
   # echo "APP_IDF_ARGS: ", idf_args, " ", "--dist-clean" in idf_args
@@ -105,7 +111,8 @@ proc parseNimbleArgs(): NimbleArgs =
     esp32_template: esp32_template,
     app_template: app_template,
     # forceupdatecache = "--forceUpdateCache" in idf_args
-    esp_idf_version: "ESP_IDF_$1" % [esp_idf_ver], # FIXME
+    # esp_idf_version: "ESP_IDF_$1" % [esp_idf_ver], # FIXME
+    esp_idf_version: esp_idf_version,
     wifi_args: wifidefs,
     debug: "--esp-debug" in idf_args,
     forceclean: "--clean" in idf_args,
