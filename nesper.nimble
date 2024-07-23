@@ -1,6 +1,6 @@
 # Package
 
-version       = "0.7.0"
+version       = "0.7.1"
 author        = "Jaremy Creechley"
 description   = "Nim wrappers for ESP-IDF (ESP32)"
 license       = "Apache-2.0"
@@ -32,37 +32,37 @@ proc general_tests() =
   for dtest in listFiles("tests/"):
     if dtest.splitFile()[1].startsWith("t") and dtest.endsWith(".nim"):
       echo("Testing: " & $dtest)
-      testExec "nim c --compileOnly:on --cincludes:c_headers/mock/ --os:freertos $1" % [dtest]
+      testExec "nim c --verbosity:0 --compileOnly:on --cincludes:c_headers/mock/ --os:freertos $1" % [dtest]
 
 proc driver_tests() =
   # Driver tests
   header "=== Driver Tests ==="
   for dtest in listFiles("tests/driver/"):
     if dtest.splitFile()[1].startsWith("t") and dtest.endsWith(".nim"):
-      echo("Testing: " & $dtest)
-      exec "nim c --compileOnly:on --cincludes:c_headers/mock/ --os:freertos $1" % [dtest]
+      echo("\nTesting: " & $dtest)
+      testExec "nim c --verbosity:0 --compileOnly:on --cincludes:c_headers/mock/ --os:freertos $1" % [dtest]
 
 proc storage_tests() =
   # Storage tests
   header "=== Storage Tests ==="
   for dtest in listFiles("tests/storage/"):
     if dtest.splitFile()[1].startsWith("t") and dtest.endsWith(".nim"):
-      echo("Testing: " & $dtest)
-      exec "nim c --compileOnly:on --cincludes:c_headers/mock/ --os:freertos $1" % [dtest]
+      echo("\nTesting: " & $dtest)
+      testExec "nim c --verbosity:0 --compileOnly:on --cincludes:c_headers/mock/ --os:freertos $1" % [dtest]
 
 proc exec_tests() =
   # Exec tests
   header "=== Exec Tests ==="
   for dtest in listFiles("tests/exec_tests/"):
     if dtest.splitFile()[1].startsWith("t") and dtest.endsWith(".nim"):
-      echo("Testing: " & $dtest)
-      exec "nim c -r --cincludes:$2/tests/c_headers/mock/ $1" % [dtest, getCurrentDir()]
+      echo("\nTesting: " & $dtest)
+      testExec "nim c --verbosity:0 -r --cincludes:$2/tests/c_headers/mock/ $1" % [dtest, getCurrentDir()]
 
 task test, "Runs the test suite":
   general_tests()
   driver_tests()
   storage_tests()
-  # exec_tests()
+  exec_tests()
 
 task test_general, "Runs the test suite":
   general_tests()
