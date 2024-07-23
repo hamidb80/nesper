@@ -130,15 +130,12 @@ proc wrapError*(code: int, msg: string, id: JsonNode,
   result = %* { "code": code, "id": id, "message": escapeJson(msg), "data": data }
   if err != nil:
     result["stacktrace"] = %* err.getStackTraceEntries()
-  echo "Error generated: ", "result: ", result, " id: ", id
 
-template wrapException(body: untyped) =
+template wrapException*(body: untyped) =
   try:
     body
-  except: 
-    let msg = getCurrentExceptionMsg()
-    echo("control server: invalid input: error: ", msg)
-    let resp = rpcInvalidRequest(msg)
+  except Exception as err: 
+    let resp = rpcInvalidRequest(err.msg)
     return resp
 
 
