@@ -1,0 +1,44 @@
+ARG IDF_VERSION=4.4
+ARG IMAGE=ghcr.io/embeddednim/esp-idf:${IDF_VERSION}-latest
+
+FROM $IMAGE AS build
+
+ARG IDF_VERSION=4.4
+
+COPY . /app/
+
+WORKDIR /app/deps/Nesper
+RUN nimble develop -y
+
+WORKDIR /app
+
+RUN : \
+  && rm -Rf build/ \
+  && mkdir /firmware/ \
+  && . $IDF_PATH/export.sh \
+  && nimble esp_build --esp-idf-version=v${IDF_VERSION}
+
+RUN : \
+  && echo "Nim version: " $(nim --version)
+
+RUN : \
+  && cp /app/build/esp32_sensor_router.bin /firmware/ \
+  && cp /app/build/ota_data_initial.bin /firmware/ \
+  && cp /app/build/bootloader/bootloader.bin /firmware/ \
+  && cp /app/build/partition_table/partition-table.bin /firmware/
+
+RUN : \
+  && echo "BUILD FILES POST: " \
+  && find /firmware
+
+FROM scratch AS deploy
+
+COPY --from=build /firmware /
+
+# COPY --from=build /app/build/flasher_args.json \
+#                   /app/build/esp32_sensor_router.bin \
+#                   /app/build/ota_data_initial.bin \
+#                   /app/build/bootloader/bootloader.bin \
+#                   /app/build/partition_table/partition-table.bin \
+#   /firmware/
+
