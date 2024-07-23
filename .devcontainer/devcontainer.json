@@ -1,6 +1,6 @@
 {
 	"name": "esp-idf",
-	"image": "ghcr.io/embeddednim/esp-idf:4.4-2023-02-12",
+	"image": "ghcr.io/embeddednim/esp-idf:4.4-latest",
 	"remoteUser": "root",
 	"postCreateCommand": "git config --global --add safe.directory '*' && sh -c \"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh) --skip-chsh\" ",
 	// "postStartCommand": "",

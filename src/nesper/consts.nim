@@ -140,9 +140,10 @@ type
 
 type
   ## *< a number that identifies an event with respect to a base
-  esp_event_handler_t* = proc (event_handler_arg: esp_event_base_t;
-                            event_base: esp_event_base_t; event_id: int32;
-                            event_data: pointer) {.cdecl.}
+  esp_event_handler_t* = proc (event_handler_arg: pointer;
+                               event_base: esp_event_base_t;
+                               event_id: int32;
+                               event_data: pointer) {.cdecl.}
 
 type
   bits* = distinct int
