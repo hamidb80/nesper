@@ -15,6 +15,7 @@ type
     args: seq[string]
     child_args: seq[string]
     cachedir: string
+    esp_idf_major: string
     esp_idf_version: string
     wifi_args: string
     debug: bool

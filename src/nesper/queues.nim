@@ -44,7 +44,7 @@ import esp/queue
 export queue
 
 type
-  XQueue*[N] = pointer
+  XQueue*[N] = distinct pointer
 
 template xQueueCreate*(uxQueueLength, uxItemSize: int): untyped =
   xQueueCreate(UBaseType_t(uxQueueLength), UBaseType_t(uxItemSize))

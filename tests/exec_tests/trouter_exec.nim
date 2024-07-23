@@ -40,7 +40,7 @@ assert res2["result"].getInt() == 3
 
 
 ## Test Call 3: incorrect arguments ##
-echo "\n## Call 3 ##"
+echo "\n## Call 3: incorrect arguments ##"
 let err_res = %* {
   "jsonrpc": "2.0",
   "id": 1,
@@ -58,7 +58,8 @@ var call3 = %* {
 }
 var res3 = rt1.route( call3 )
 echo "Result 3: "
-echo res3
+echo res3.pretty()
 
+assert res3["error"].kind == JObject
 delete(res3["error"], "stacktrace")
 assert res3 == err_res

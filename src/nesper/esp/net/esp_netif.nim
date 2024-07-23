@@ -35,6 +35,7 @@ else:
   export esp_netif_impl
   export esp_netif_defaults
 
+  export esp_netif_impl
   export esp_wifi_types
   export esp_netif_ip_addr
   export esp_netif_types
