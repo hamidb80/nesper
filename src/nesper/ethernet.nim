@@ -1,12 +1,15 @@
 
-import nesper
-import nesper/gpios
-import nesper/spis
+import consts
+import general
+import esp/esp_log
+
+import gpios
+import spis
 import esp/driver/spi
 
-import nesper/esp/net/esp_eth_com
-import nesper/esp/net/esp_eth_mac
-import nesper/esp/net/esp_eth
+import esp/net/esp_eth_com
+import esp/net/esp_eth_mac
+import esp/net/esp_eth
 
 export esp_eth_com
 export esp_eth_mac
@@ -15,6 +18,11 @@ export esp_eth
 when defined(ESP_IDF_V4_0):
   import nesper/esp/net/tcpip_adapter
   export tcpip_adapter
+else:
+  import nesper/esp/net/esp_netif_types
+  import nesper/esp/net/esp_netif
+  export esp_netif_types
+  export esp_netif
 
 type
   # EthernetConfigType* = concept x
@@ -59,7 +67,7 @@ when not defined(ESP_IDF_V4_0):
 
 proc initEthernetConfig*(): EthernetConfig =
   new(result)
-  result.mac = ETH_MAC_DEFAULT_CONFIG()
+  result.mac = ethMacDefaultConfig()
   result.phy = ETH_PHY_DEFAULT_CONFIG()
 
 # proc initEthernet*[T](): T =
