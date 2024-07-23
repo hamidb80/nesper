@@ -228,7 +228,7 @@ else:
 ##       - instance: create MAC instance successfully
 ##       - NULL: create MAC instance failed because some error occurred
 
-when not defined(ESP_IDF_V4_0):
+when not (defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_x)):
   type
     eth_esp32_emac_config_t* {.importc: "eth_esp32_emac_config_t", header: "esp_eth_mac.h", bycopy, incompleteStruct.} = object
       smi_mdc_gpio_num* {.importc: "smi_mdc_gpio_num".}: cint ## !< SMI MDC GPIO number

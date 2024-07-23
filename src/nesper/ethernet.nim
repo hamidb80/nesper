@@ -51,7 +51,7 @@ type
     config*: EthernetConfig
     spi*: EthernetSpiConfig
 
-when not defined(ESP_IDF_V4_0):
+when not (defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_x)):
   type
     EthConfigW5500* = ref object
       config*: EthernetConfig
@@ -107,7 +107,7 @@ proc setupEthernet*(eth: var EthConfigDM9051): EthernetObj =
   result.mac = esp_eth_mac_new_dm9051(addr dm9051_config, addr eth.config.mac)
   result.phy = esp_eth_phy_new_dm9051(addr eth.config.phy)
 
-when not defined(ESP_IDF_V4_0):
+when not (defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_x)):
   proc setupEthernet*(eth: var EthConfigW5500): EthernetObj = 
     check: gpio_install_isr_service(0.esp_intr_flags)
 

@@ -6,7 +6,7 @@ import esp/esp_system
 import net
 export net 
 
-when not defined(ESP_IDF_V4_0):
+when not (defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_x)):
   import esp/net/esp_netif
   export esp_netif 
 
@@ -82,7 +82,7 @@ when defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_X):
   proc toIpAddress*(ip: ip6_addr_t): IpAddress =
     toIpAddress(ip.address)
 
-when not defined(ESP_IDF_V4_0):
+when not (defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_x)):
   proc toIpAddress*(ip: esp_ip4_addr_t): IpAddress =
     toIpAddress(ip.address)
 
