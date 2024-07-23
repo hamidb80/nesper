@@ -30,7 +30,10 @@ else:
   import esp_eth_netif_glue
 
   import esp_netif_impl
-  include esp_netif_defaults
+  import esp_netif_defaults
+
+  export esp_netif_impl
+  export esp_netif_defaults
 
   export esp_netif_impl
   export esp_wifi_types

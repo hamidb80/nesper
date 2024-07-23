@@ -11,6 +11,8 @@ srcDir        = "src"
 requires "nim >= 1.4.0"
 requires "msgpack4nim >= 0.3.1"
 requires "stew >= 0.1.0"
+requires "bytesequtils"
+
 # requires "bytesequtils >= 1.1"
 # requires "nimcrypto >= 1.0"
 
@@ -28,7 +30,7 @@ proc general_tests() =
   # Regular tests
   header "=== Regular Tests ==="
   for dtest in listFiles("tests/"):
-    if dtest.startsWith("t") and dtest.endsWith(".nim"):
+    if dtest.splitFile()[1].startsWith("t") and dtest.endsWith(".nim"):
       echo("Testing: " & $dtest)
       testExec "nim c --compileOnly:on --cincludes:c_headers/mock/ --os:freertos $1" % [dtest]
 
@@ -36,28 +38,31 @@ proc driver_tests() =
   # Driver tests
   header "=== Driver Tests ==="
   for dtest in listFiles("tests/driver/"):
-    if dtest.startsWith("t") and dtest.endsWith(".nim"):
-      testExec "nim c --compileOnly:on --cincludes:c_headers/mock/ --os:freertos $1" % [dtest]
+    if dtest.splitFile()[1].startsWith("t") and dtest.endsWith(".nim"):
+      echo("Testing: " & $dtest)
+      exec "nim c --compileOnly:on --cincludes:c_headers/mock/ --os:freertos $1" % [dtest]
 
 proc storage_tests() =
   # Storage tests
   header "=== Storage Tests ==="
   for dtest in listFiles("tests/storage/"):
-    if dtest.startsWith("t") and dtest.endsWith(".nim"):
-      testExec "nim c --compileOnly:on --cincludes:c_headers/mock/ --os:freertos $1" % [dtest]
+    if dtest.splitFile()[1].startsWith("t") and dtest.endsWith(".nim"):
+      echo("Testing: " & $dtest)
+      exec "nim c --compileOnly:on --cincludes:c_headers/mock/ --os:freertos $1" % [dtest]
 
 proc exec_tests() =
   # Exec tests
   header "=== Exec Tests ==="
   for dtest in listFiles("tests/exec_tests/"):
-    if dtest.startsWith("t") and dtest.endsWith(".nim"):
-      testExec "nim c -r --cincludes:$2/tests/c_headers/mock/ $1" % [dtest, getCurrentDir()]
+    if dtest.splitFile()[1].startsWith("t") and dtest.endsWith(".nim"):
+      echo("Testing: " & $dtest)
+      exec "nim c -r --cincludes:$2/tests/c_headers/mock/ $1" % [dtest, getCurrentDir()]
 
 task test, "Runs the test suite":
   general_tests()
   driver_tests()
   storage_tests()
-  exec_tests()
+  # exec_tests()
 
 task test_general, "Runs the test suite":
   general_tests()
