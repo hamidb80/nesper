@@ -15,6 +15,7 @@ type
     args: seq[string]
     child_args: seq[string]
     cachedir: string
+    esp_idf_major: string
     esp_idf_version: string
     wifi_args: string
     debug: bool
@@ -88,11 +89,12 @@ proc parseNimbleArgs(): NimbleArgs =
     esp32_template  = flags.getOrDefault("--esp32-template", "networking")
     app_template  = flags.getOrDefault("--app-template", "http_server")
 
-    esp_idf_ver = flags.getOrDefault("--esp-idf-version", "V4.0")
+    esp_idf_flag = "ESP_IDF_$1" % [flags.getOrDefault("--esp-idf-version", "V4.0")]
+    esp_idf_version = "ESP_IDF_$1" % [esp_idf_flag]
 
-    esp_idf_version =
-      if esp_idf_ver.startsWith("4."): "ESP_IDF_V4_X"
-      elif esp_idf_ver.startsWith("5."): "ESP_IDF_V5_X"
+    esp_idf_major =
+      if esp_idf_flag.startsWith("4."): "ESP_IDF_V4_X"
+      elif esp_idf_flag.startsWith("5."): "ESP_IDF_V5_X"
       else: "ESP_IDF_V4_X"
 
   # echo "APP_TEMPLATE ANY: ", idf_args.any(x => x.startsWith("--app-template"))
@@ -111,7 +113,7 @@ proc parseNimbleArgs(): NimbleArgs =
     esp32_template: esp32_template,
     app_template: app_template,
     # forceupdatecache = "--forceUpdateCache" in idf_args
-    # esp_idf_version: "ESP_IDF_$1" % [esp_idf_ver], # FIXME
+    esp_idf_major: esp_idf_major,
     esp_idf_version: esp_idf_version,
     wifi_args: wifidefs,
     debug: "--esp-debug" in idf_args,
@@ -234,6 +236,7 @@ task esp_compile, "Compile Nim project for esp-idf program":
       "--compileOnly",
       "--nimcache:" & nopts.cachedir.quoteShell(),
       "-d:NimAppMain",
+      "-d:" & nopts.esp_idf_major,
       "-d:" & nopts.esp_idf_version
     ].join(" ") 
     childargs = nopts.child_args.mapIt(it.quoteShell()).join(" ")
