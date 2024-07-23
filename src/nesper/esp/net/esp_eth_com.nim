@@ -101,7 +101,7 @@ type
     ETHERNET_EVENT_CONNECTED, ## !< Ethernet got a valid link
     ETHERNET_EVENT_DISCONNECTED ## !< Ethernet lost a valid link
 
-when defined(ESP_IDF_V4_0):
+when defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_x):
   var ETH_EVENT* {.importc: "ETH_EVENT", header: "esp_wifi_types.h".}: esp_event_base_t ##  @brief Ethernet event base declaration
 else:
   var ETH_EVENT* {.importc: "ETH_EVENT", header: "esp_eth_com.h".}: esp_event_base_t ##  @brief Ethernet event base declaration

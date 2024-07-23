@@ -12,7 +12,7 @@ export esp_eth_com
 export esp_eth_mac
 export esp_eth
 
-when defined(ESP_IDF_V4_0):
+when defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_x):
   import nesper/esp/net/tcpip_adapter
   export tcpip_adapter
 

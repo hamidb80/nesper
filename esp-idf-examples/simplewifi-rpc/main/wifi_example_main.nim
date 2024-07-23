@@ -103,7 +103,7 @@ proc exampleDisconnect*(): esp_err_t =
 
 app_main():
   initNvs()
-  when defined(ESP_IDF_V4_0):
+  when defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_x):
     tcpip_adapter_init()
   else:
     # Initialize TCP/IP network interface (should be called only once in application)

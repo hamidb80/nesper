@@ -108,7 +108,7 @@ const
 ##  @brief Description about application.
 ##
 
-when defined(ESP_IDF_V4_0):
+when defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_x):
   const hdr = "esp_app_format.h"
 else:
   const hdr = "esp_app_desc.h"

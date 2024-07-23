@@ -70,7 +70,7 @@ proc ethernetStart*[ET](eth: var ET) =
 
   TAG.logi("ethernetStart")
 
-  when defined(ESP_IDF_V4_0):
+  when defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_x):
     check: tcpip_adapter_set_default_eth_handlers()
   else:
     TAG.logi("esp_netif_new")
