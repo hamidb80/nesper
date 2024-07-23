@@ -21,7 +21,7 @@ proc networkingStart*(startNvs=true) =
     initNvs()
 
   # Initialize TCP/IP network interface (should be called only once in application)
-  when defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_X):
+  when defined(ESP_IDF_V4_0):
     tcpip_adapter_init()
   else:
     check: esp_netif_init()

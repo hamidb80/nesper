@@ -12,9 +12,12 @@ export esp_eth_com
 export esp_eth_mac
 export esp_eth
 
-when defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_X):
+when defined(ESP_IDF_V4_0):
   import nesper/esp/net/tcpip_adapter
   export tcpip_adapter
+else:
+  import esp/net/esp_netif
+  export esp_netif
 
 type
   # EthernetConfigType* = concept x
@@ -51,7 +54,7 @@ type
     config*: EthernetConfig
     spi*: EthernetSpiConfig
 
-when not (defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_x)):
+when not defined(ESP_IDF_V4_0):
   type
     EthConfigW5500* = ref object
       config*: EthernetConfig
@@ -107,7 +110,7 @@ proc setupEthernet*(eth: var EthConfigDM9051): EthernetObj =
   result.mac = esp_eth_mac_new_dm9051(addr dm9051_config, addr eth.config.mac)
   result.phy = esp_eth_phy_new_dm9051(addr eth.config.phy)
 
-when not (defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_x)):
+when not defined(ESP_IDF_V4_0):
   proc setupEthernet*(eth: var EthConfigW5500): EthernetObj = 
     check: gpio_install_isr_service(0.esp_intr_flags)
 

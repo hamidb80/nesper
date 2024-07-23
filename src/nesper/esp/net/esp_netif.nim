@@ -19,7 +19,7 @@ import ../../consts
 ##   for applications that used tcpip_adapter API without explicit inclusion of tcpip_adapter.h
 ##
 
-when defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_X):
+when defined(ESP_IDF_V4_0):
   include tcpip_adapter
 
 else:

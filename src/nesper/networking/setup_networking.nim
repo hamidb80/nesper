@@ -16,7 +16,7 @@ var networkConnectEventGroup*: EventGroupHandle_t
 var networkIpAddr*: IpAddress
 var networkConnectionName*: cstring
 
-when defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_X):
+when defined(ESP_IDF_V4_0):
   type
     TcpIpAdaptersHandles* = tcpip_adapter_if_t
     TcpIpAdaptersInfoHandles* = ptr tcpip_adapter_ip_info_t
@@ -32,14 +32,14 @@ proc networkingInitDhcp*(
     ) =
   if not dhcp_server:
     for tcp_adp in tcp_adapters:
-      when defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_X):
+      when defined(ESP_IDF_V4_0):
         check: tcpip_adapter_dhcps_stop(tcp_adp)
       else:
         check: esp_netif_dhcps_stop(tcp_adp)
 
   if not dhcp_client:
     for tcp_adp in tcp_adapters:
-      when defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_X):
+      when defined(ESP_IDF_V4_0):
         check: tcpip_adapter_dhcpc_stop(tcp_adp)
       else:
         check: esp_netif_dhcpc_stop(tcp_adp)
@@ -54,7 +54,7 @@ proc networkingInit*(
     initNvs()
 
   # Initialize TCP/IP network interface (should be called only once in application)
-  when defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_X):
+  when defined(ESP_IDF_V4_0):
     TAG.logi("tcpip_adapter_init")
     tcpip_adapter_init()
   else:
@@ -96,7 +96,7 @@ proc setStaticIpAddress*(
     networkingInitDhcp(dhcp_client=false, dhcp_server=false, tcp_adapters)
 
   for tcp_adp in tcp_adapters:
-    when defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_X):
+    when defined(ESP_IDF_V4_0):
       check: tcpip_adapter_set_ip_info(tcpip_if, ip_info)
     else:
       check: esp_netif_set_ip_info(tcp_adp, addr ip_info)

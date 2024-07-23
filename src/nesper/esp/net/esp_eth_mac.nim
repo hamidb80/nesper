@@ -176,11 +176,11 @@ type
     rx_task_stack_size* {.importc: "rx_task_stack_size".}: uint32 ## !< Stack size of the receive task
     rx_task_prio* {.importc: "rx_task_prio".}: uint32 ## !< Priority of the receive task
     flags* {.importc: "flags".}: uint32 ## !< Flags that specify extra capability for mac driver
-    when defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_X):
+    when defined(ESP_IDF_V4_0):
       smi_mdc_gpio_num* {.importc: "smi_mdc_gpio_num".}: cint ## !< SMI MDC GPIO number
       smi_mdio_gpio_num* {.importc: "smi_mdio_gpio_num".}: cint ## !< SMI MDIO GPIO number
 
-when defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_X):
+when defined(ESP_IDF_V4_0):
   proc ETH_MAC_DEFAULT_CONFIG*(
             sw_reset_timeout_ms = 100,
             rx_task_stack_size = 4096,
@@ -228,7 +228,7 @@ else:
 ##       - instance: create MAC instance successfully
 ##       - NULL: create MAC instance failed because some error occurred
 
-when not (defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_x)):
+when not defined(ESP_IDF_V4_0):
   type
     eth_esp32_emac_config_t* {.importc: "eth_esp32_emac_config_t", header: "esp_eth_mac.h", bycopy, incompleteStruct.} = object
       smi_mdc_gpio_num* {.importc: "smi_mdc_gpio_num".}: cint ## !< SMI MDC GPIO number
@@ -243,7 +243,7 @@ when not (defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_x)):
     """.}
     {.emit: ["", result, " = res;"].}
 
-when defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_X):
+when defined(ESP_IDF_V4_0):
   proc esp_eth_mac_new_esp32*(config: ptr eth_mac_config_t): ptr esp_eth_mac_t {.
       importc: "esp_eth_mac_new_esp32", header: "esp_eth_mac.h".}
 else:

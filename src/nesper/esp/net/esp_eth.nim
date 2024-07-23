@@ -47,7 +47,7 @@ type
 ##       - ESP_FAIL: error occurred when inputting buffer to upper stack
 ##
 ##
-when defined(ESP_IDF_V4_0) or defined(ESP_IDF_V4_X):
+when defined(ESP_IDF_V4_0):
   type
     stack_input_cb_t* =  proc (eth_handle: esp_eth_handle_t; buffer: ptr uint8; length: uint32): esp_err_t {.cdecl.}
 else:
