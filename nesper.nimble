@@ -1,6 +1,6 @@
 # Package
 
-version       = "0.7.1"
+version       = "0.7.2"
 author        = "Jaremy Creechley"
 description   = "Nim wrappers for ESP-IDF (ESP32)"
 license       = "Apache-2.0"
@@ -13,14 +13,10 @@ requires "msgpack4nim >= 0.3.1"
 requires "stew >= 0.1.0"
 requires "bytesequtils"
 
-# requires "bytesequtils >= 1.1"
-# requires "nimcrypto >= 1.0"
-
-
 # Tasks
 import os, strutils
 
-let NFLAGS="--verbosity:0 -d:ESP_IDF_VERSION=" &
+const NFLAGS="--verbosity:0 -d:ESP_IDF_VERSION=" &
               getEnv("ESP_IDF_VERSION", "4.4") &
               " --cincludes:" & (getCurrentDir() / "tests" / "c_headers" / "mock")
 
@@ -29,6 +25,7 @@ proc header(msg: string) =
 
 proc testExec(extras, file: string, flags=NFLAGS) =
   let cmd = "nim c $1 $2 $3" % [flags, extras, file]
+  echo("")
   echo("Testing: " & $file)
   echo "running: ", cmd
   exec(cmd)

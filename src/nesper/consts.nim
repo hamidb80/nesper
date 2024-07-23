@@ -7,13 +7,18 @@ type
 
 
 import strutils
+from os import getEnv
+from macros import error, warning
+
 const
-  ESP_IDF_VERSION* {.strdefine.} = "0.0"
+  ESP_IDF_VERSION* {.strdefine.} = getEnv("ESP_IDF_VERSION", "0.0")
   ESP_IDF_MAJOR* {.intdefine.} = ESP_IDF_VERSION.split(".")[0].parseInt()
   ESP_IDF_MINOR* {.intdefine.} = ESP_IDF_VERSION.split(".")[1].parseInt()
 
 static:
-  doAssert ESP_IDF_VERSION != "0.0", "Must set esp-idf version using `-d:ESP_IDF_VERSION=4.4`"
+  if ESP_IDF_VERSION == "0.0":
+    warning("ESP_IDF_VERSION: " & ESP_IDF_VERSION)
+    error("Must set esp-idf version using `-d:ESP_IDF_VERSION=4.4` or using an environment variable `export ESP_IDF_VERSION=4.4`")
 
 
 ##  Definitions for error constants.
