@@ -1,5 +1,6 @@
 ARG IDF_VERSION=4.4
-ARG IMAGE=ghcr.io/embeddednim/esp-idf:${IDF_VERSION}-latest
+ARG NIM_VERSION=1.6.20
+ARG IMAGE=ghcr.io/embeddednim/esp-idf:${IDF_VERSION}-nim_${NIM_VERSION}-latest
 
 FROM $IMAGE AS build
 
